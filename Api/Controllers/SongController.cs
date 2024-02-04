@@ -1,8 +1,9 @@
+using System.Threading.Tasks;
 using App.DataTransferObjects.Request;
-using App.Logic.SampleLogic.Services;
+using App.Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace SpotifyNTier.Controllers;
+namespace Api.Controllers;
 
 [ApiController]
 [Route("/api/[controller]")]

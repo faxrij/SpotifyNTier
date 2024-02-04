@@ -1,10 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using App.DataTransferObjects.Request;
 using App.Entities;
 using App.Infrastructure.Contexts;
-using App.Logic.SampleLogic.Services;
+using App.Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace App.Logic.SampleLogic.Managers;
+namespace App.Logic.Services;
 
 public class CategoryService : ICategoryService
 {

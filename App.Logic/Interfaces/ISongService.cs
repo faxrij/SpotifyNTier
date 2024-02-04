@@ -1,7 +1,9 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using App.DataTransferObjects.Request;
 using App.Entities;
 
-namespace App.Logic.SampleLogic.Services;
+namespace App.Logic.Interfaces;
 
 public interface ISongService
 {

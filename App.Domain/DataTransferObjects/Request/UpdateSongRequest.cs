@@ -11,7 +11,7 @@ public class UpdateSongRequest
     public int DurationInSeconds { get; set; }
     
     [Required]
-    public String Lyrics { get; set; }
+    public string Lyrics { get; set; }
     
     [Required]
     public int AlbumId { get; set; }

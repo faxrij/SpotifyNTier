@@ -1,10 +1,13 @@
 using App.Infrastructure.Contexts;
-using App.Logic.SampleLogic.Managers;
-using App.Logic.SampleLogic.Services;
+using App.Logic.Interfaces;
 using App.Logic.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-namespace SpotifyNTier;
+namespace Api;
 
 public class Program
 {
