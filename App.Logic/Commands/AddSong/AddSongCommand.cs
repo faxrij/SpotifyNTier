@@ -1,17 +1,19 @@
 using System.ComponentModel.DataAnnotations;
+using App.Domain.Entities;
+using MediatR;
 
-namespace App.Logic.DataTransferObjects.Request;
+namespace App.Logic.Commands.AddSong;
 
-public class CreateSongRequest
+public class AddSongCommand : IRequest<Song>
 {
     [Required]
-    public string Title { get; set; }
+    public string? Title { get; set; }
     
     [Required]
     public int DurationInSeconds { get; set; }
     
     [Required]
-    public string Lyrics { get; set; }
+    public string? Lyrics { get; set; }
     
     [Required]
     public int AlbumId { get; set; }

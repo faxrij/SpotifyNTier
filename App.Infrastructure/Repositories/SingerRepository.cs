@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using App.Domain.Entities;
 using App.Infrastructure.Contexts;
-using App.Logic.DataTransferObjects.Request;
+using App.Logic.Commands.AddSinger;
+using App.Logic.Commands.UpdateSinger;
 using App.Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,12 +28,12 @@ internal class SingerRepository : ISingerRepository
             .FirstOrDefaultAsync(s => s.Id == id);
     }
 
-    public async Task<Singer> CreateSingerAsync(CreateSingerRequest createSingerRequest)
+    public async Task<Singer> CreateSingerAsync(AddSingerCommand addSingerCommand)
     {
         Singer singer = new Singer();
         singer.Albums = new List<Album>();
-        singer.Name = createSingerRequest.Name;
-        singer.BirthDate = createSingerRequest.BirthDate;
+        singer.Name = addSingerCommand.Name;
+        singer.BirthDate = addSingerCommand.BirthDate;
         _context.Singers.Add(singer);
         await _context.SaveChangesAsync();
         return singer;
@@ -55,7 +53,7 @@ internal class SingerRepository : ISingerRepository
         return true;
     }
 
-    public async Task<Singer?> UpdateSingerAsync(UpdateSingerRequest updateSingerRequest, int id)
+    public async Task<Singer?> UpdateSingerAsync(UpdateSingerCommand updateSingerCommand, int id)
     {
         var singerToUpdate = await _context.Singers.FindAsync(id);
         if (singerToUpdate == null)
@@ -63,8 +61,8 @@ internal class SingerRepository : ISingerRepository
             throw new InvalidOperationException($"Provided category with ID {id} not found.");
         }
 
-        singerToUpdate.BirthDate = updateSingerRequest.BirthDate;
-        singerToUpdate.Name = updateSingerRequest.Name;
+        singerToUpdate.BirthDate = updateSingerCommand.BirthDate;
+        singerToUpdate.Name = updateSingerCommand.Name;
         
         await _context.SaveChangesAsync();
         return singerToUpdate;

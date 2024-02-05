@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using App.Domain.Entities;
 using App.Infrastructure.Contexts;
-using App.Logic.DataTransferObjects.Request;
+using App.Logic.Commands.AddSong;
+using App.Logic.Commands.UpdateSong;
 using App.Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,20 +29,20 @@ internal class SongRepository : ISongRepository
             .FirstOrDefaultAsync(s => s.Id == id);
     }
 
-    public async Task<Song> CreateSongAsync(CreateSongRequest createSongRequest)
+    public async Task<Song> CreateSongAsync(AddSongCommand addSongCommand)
     {
         Song song = new Song();
-        Album? album = await _context.Albums.Where(a => a.Id == createSongRequest.AlbumId).FirstOrDefaultAsync();
+        Album? album = await _context.Albums.Where(a => a.Id == addSongCommand.AlbumId).FirstOrDefaultAsync();
 
         if (album == null)
         {
-            throw new InvalidOperationException($"Album with ID {createSongRequest.AlbumId} not found.");
+            throw new InvalidOperationException($"Album with ID {addSongCommand.AlbumId} not found.");
         }
         
         song.Album = album;
-        song.Lyrics = createSongRequest.Lyrics;
-        song.Title = createSongRequest.Title;
-        song.DurationInSeconds = createSongRequest.DurationInSeconds;
+        song.Lyrics = addSongCommand.Lyrics;
+        song.Title = addSongCommand.Title;
+        song.DurationInSeconds = addSongCommand.DurationInSeconds;
         song.Categories = new List<Category>();
         _context.Songs.Add(song);
         await _context.SaveChangesAsync();
@@ -66,7 +63,7 @@ internal class SongRepository : ISongRepository
         return true;
     }
 
-    public async Task<Song?> UpdateSongAsync(UpdateSongRequest updateSongRequest, int id)
+    public async Task<Song?> UpdateSongAsync(UpdateSongCommand updateSongCommand, int id)
     {
         var songToUpdate = await _context.Songs.FindAsync(id);
         if (songToUpdate == null)
@@ -74,17 +71,17 @@ internal class SongRepository : ISongRepository
             throw new InvalidOperationException($"Provided Song with ID {id} not found.");
         }
 
-        var album = await _context.Albums.FirstOrDefaultAsync(c => c.Id == updateSongRequest.AlbumId);
+        var album = await _context.Albums.FirstOrDefaultAsync(c => c.Id == updateSongCommand.AlbumId);
 
         if (album == null)
         {
             throw new InvalidOperationException($"Album with ID {id} not found.");
         }
 
-        songToUpdate.DurationInSeconds = updateSongRequest.DurationInSeconds;
+        songToUpdate.DurationInSeconds = updateSongCommand.DurationInSeconds;
         songToUpdate.Album = album;
-        songToUpdate.Lyrics = updateSongRequest.Lyrics;
-        songToUpdate.Title = updateSongRequest.Title;
+        songToUpdate.Lyrics = updateSongCommand.Lyrics;
+        songToUpdate.Title = updateSongCommand.Title;
         
         await _context.SaveChangesAsync();
         return songToUpdate;

@@ -1,53 +1,46 @@
 using App.Domain.Entities;
-using App.Logic.DataTransferObjects.Request;
+using App.Logic.Commands.AddCategory;
+using App.Logic.Commands.UpdateCategory;
 using App.Logic.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CategoryController : ControllerBase
+public class CategoryController(ICategoryRepository categoryRepository, IMediator mediator) : ControllerBase
 {
-    private readonly ICategoryRepository _categoryRepository;
-
-    public CategoryController(ICategoryRepository categoryRepository)
-    {
-        _categoryRepository = categoryRepository;
-    }
-
     [HttpGet]
     public async Task<ActionResult<List<Category>>> GetCategories()
     {
-        var categories = await _categoryRepository.GetAllCategoriesAsync();
+        var categories = await categoryRepository.GetAllCategoriesAsync();
         return Ok(categories);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Category>> GetCategory(int id)
     {
-        var category = await _categoryRepository.GetCategoryByIdAsync(id);
+        var category = await categoryRepository.GetCategoryByIdAsync(id);
         return Ok(category);
     }
 
     [HttpPost]
-    public async Task<ActionResult<Category>> CreateCategory(CreateCategoryRequest createCategoryRequest)
+    public async Task<ActionResult<Category>> CreateCategory(AddCategoryCommand addCategoryCommand)
     {
-        var createdCategory = await _categoryRepository.CreateCategoryAsync(createCategoryRequest);
-        return CreatedAtAction(nameof(GetCategory), new { id = createdCategory.Id }, createdCategory);
+        return await mediator.Send(addCategoryCommand);
     }
     
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCategory(int id)
     {
-        var result = await _categoryRepository.RemoveCategoryAsync(id);
+        var result = await categoryRepository.RemoveCategoryAsync(id);
         return Ok(result);
     }
     
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateCategory(UpdateCategoryRequest updateCategoryRequest, int id)
+    [HttpPut]
+    public async Task<ActionResult<Category>> UpdateCategory(UpdateCategoryCommand updateCategoryCommand)
     {
-        var category = await _categoryRepository.UpdateCategoryAsync(updateCategoryRequest, id);
-        return Ok(category);
+        return await mediator.Send(updateCategoryCommand);
     }
 }

@@ -1,6 +1,7 @@
 using App.Domain.Entities;
 using App.Infrastructure.Contexts;
-using App.Logic.DataTransferObjects.Request;
+using App.Logic.Commands.AddCategory;
+using App.Logic.Commands.UpdateCategory;
 using App.Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,20 +29,20 @@ internal class CategoryRepository : ICategoryRepository
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public async Task<Category> CreateCategoryAsync(CreateCategoryRequest createCategoryRequest)
+    public async Task<Category> CreateCategoryAsync(AddCategoryCommand addCategoryCommand)
     {
         Category category = new Category();
         var parentCategory = await _context.Categories
-            .FirstOrDefaultAsync(c => c.Id == createCategoryRequest.ParentCategoryId);
+            .FirstOrDefaultAsync(c => c.Id == addCategoryCommand.ParentCategoryId);
         
         if (parentCategory == null)
         {
-            throw new InvalidOperationException($"Parent category with ID {createCategoryRequest.ParentCategoryId} not found.");
+            throw new InvalidOperationException($"Parent category with ID {addCategoryCommand.ParentCategoryId} not found.");
         }
 
         category.IsParentCategory = false;
         category.Songs = new List<Song>();
-        category.Name = createCategoryRequest.Name;
+        category.Name = addCategoryCommand.Name;
         _context.Categories.Add(category);
         await _context.SaveChangesAsync();
         return category;
@@ -61,7 +62,7 @@ internal class CategoryRepository : ICategoryRepository
         return true;
     }
 
-    public async Task<Category?> UpdateCategoryAsync(UpdateCategoryRequest updateCategoryRequest, int id)
+    public async Task<Category?> UpdateCategoryAsync(UpdateCategoryCommand updateCategoryCommand, int id)
     {
         var categoryToUpdate = await _context.Categories.FindAsync(id);
         if (categoryToUpdate == null)
@@ -69,7 +70,7 @@ internal class CategoryRepository : ICategoryRepository
             throw new InvalidOperationException($"Provided category with ID {id} not found.");
         }
 
-        var parentCategory = await _context.Categories.FirstOrDefaultAsync(c => c.Id == updateCategoryRequest.ParentCategoryId);
+        var parentCategory = await _context.Categories.FirstOrDefaultAsync(c => c.Id == updateCategoryCommand.ParentCategoryId);
 
         if (parentCategory == null)
         {
@@ -77,7 +78,7 @@ internal class CategoryRepository : ICategoryRepository
         }
 
         categoryToUpdate.ParentCategory = parentCategory;
-        categoryToUpdate.Name = updateCategoryRequest.Name;
+        categoryToUpdate.Name = updateCategoryCommand.Name;
         
         await _context.SaveChangesAsync();
         return categoryToUpdate;

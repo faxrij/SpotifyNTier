@@ -1,9 +1,8 @@
 using App.Domain.Entities;
-using App.Logic.Commands;
 using App.Logic.Interfaces;
 using MediatR;
 
-namespace App.Logic.Handlers;
+namespace App.Logic.Commands.AddAlbum;
 
 public class AddAlbumCommandHandler : IRequestHandler<AddAlbumCommand, Album>
 {

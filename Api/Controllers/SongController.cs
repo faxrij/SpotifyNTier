@@ -1,52 +1,46 @@
-using App.Logic.DataTransferObjects.Request;
+using App.Domain.Entities;
+using App.Logic.Commands.AddSong;
+using App.Logic.Commands.UpdateSong;
 using App.Logic.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
 [ApiController]
 [Route("/api/[controller]")]
-public class SongController : ControllerBase
+public class SongController(ISongRepository songRepository, IMediator mediator) : ControllerBase
 {
-    private readonly ISongRepository _songRepository;
-
-    public SongController(ISongRepository songRepository)
-    {
-        _songRepository = songRepository;
-    }
-
     [HttpGet]
     public async Task<IActionResult> GetAllSongs()
     {
-        var songs = await _songRepository.GetAllSongsAsync();
+        var songs = await songRepository.GetAllSongsAsync();
         return Ok(songs);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetSongById(int id)
     {
-        var song = await _songRepository.GetSongByIdAsync(id); 
+        var song = await songRepository.GetSongByIdAsync(id); 
         return Ok(song);
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateSong(CreateSongRequest createSongRequest)
+    public async Task<ActionResult<Song>> CreateSong(AddSongCommand addSongCommand)
     {
-        var createdSong = await _songRepository.CreateSongAsync(createSongRequest);
-        return CreatedAtAction(nameof(GetSongById), new { id = createdSong.Id }, createdSong);
+        return await mediator.Send(addSongCommand);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> RemoveSong(int id)
     { 
-        var isRemoved = await _songRepository.RemoveSongAsync(id); 
+        var isRemoved = await songRepository.RemoveSongAsync(id); 
         return Ok(isRemoved);
     }
     
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateSong(UpdateSongRequest updateSongRequest, int id)
+    [HttpPut]
+    public async Task<ActionResult<Song>> UpdateSong(UpdateSongCommand updateSongCommand)
     {
-        var song = await _songRepository.UpdateSongAsync(updateSongRequest, id);
-        return Ok(song);
+        return await mediator.Send(updateSongCommand);
     }
 }

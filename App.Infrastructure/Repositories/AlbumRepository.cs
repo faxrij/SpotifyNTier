@@ -1,7 +1,7 @@
 using App.Domain.Entities;
 using App.Infrastructure.Contexts;
-using App.Logic.Commands;
-using App.Logic.DataTransferObjects.Request;
+using App.Logic.Commands.AddAlbum;
+using App.Logic.Commands.UpdateAlbum;
 using App.Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,12 +28,12 @@ internal class AlbumRepository : IAlbumRepository
             .FirstOrDefaultAsync(a => a.Id == id);
     }
 
-    public async Task<Album> CreateAlbumAsync(AddAlbumCommand createAlbumRequest)
+    public async Task<Album> CreateAlbumAsync(AddAlbumCommand addAlbumCommand)
     {
         Album album = new Album();
         album.Songs = new List<Song>();
-        album.ReleaseYear = createAlbumRequest.ReleaseYear;
-        album.Title = createAlbumRequest.Title;
+        album.ReleaseYear = addAlbumCommand.ReleaseYear;
+        album.Title = addAlbumCommand.Title;
         _context.Albums.Add(album);
         await _context.SaveChangesAsync();
         return album;
@@ -53,7 +53,7 @@ internal class AlbumRepository : IAlbumRepository
         return true;
     }
 
-    public async Task<Album?> UpdateAlbumAsync(UpdateAlbumRequest updateAlbumRequest, int id)
+    public async Task<Album?> UpdateAlbumAsync(UpdateAlbumCommand updateAlbumCommand, int id)
     {
         var albumToUpdate = await _context.Albums.FindAsync(id);
         if (albumToUpdate == null)
@@ -61,8 +61,8 @@ internal class AlbumRepository : IAlbumRepository
             throw new InvalidOperationException($"Album with ID {id} not found.");
         }
 
-        albumToUpdate.ReleaseYear = updateAlbumRequest.ReleaseYear;
-        albumToUpdate.Title = updateAlbumRequest.Title;
+        albumToUpdate.ReleaseYear = updateAlbumCommand.ReleaseYear;
+        albumToUpdate.Title = updateAlbumCommand.Title;
         
         await _context.SaveChangesAsync();
         return albumToUpdate;

@@ -1,53 +1,46 @@
 using App.Domain.Entities;
-using App.Logic.DataTransferObjects.Request;
+using App.Logic.Commands.AddSinger;
+using App.Logic.Commands.UpdateSong;
 using App.Logic.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class SingerController : ControllerBase
+public class SingerController(ISingerRepository singerRepository, IMediator mediator) : ControllerBase
 {
-    private readonly ISingerRepository _singerRepository;
-
-    public SingerController(ISingerRepository singerRepository)
-    {
-        _singerRepository = singerRepository;
-    }
-    
     [HttpGet]
     public async Task<ActionResult<List<Singer>>> GetSingers()
     {
-        var singers = await _singerRepository.GetAllSingersAsync();
+        var singers = await singerRepository.GetAllSingersAsync();
         return Ok(singers);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Singer>> GetSinger(int id)
     {
-        var singer = await _singerRepository.GetSingerByIdAsync(id);
+        var singer = await singerRepository.GetSingerByIdAsync(id);
         return Ok(singer);
     }
 
     [HttpPost]
-    public async Task<ActionResult<Singer>> CreateSinger(CreateSingerRequest createSingerRequest)
+    public async Task<ActionResult<Singer>> CreateSinger(AddSingerCommand addSingerCommand)
     {
-        var createdSinger = await _singerRepository.CreateSingerAsync(createSingerRequest);
-        return CreatedAtAction(nameof(GetSinger), new { id = createdSinger.Id }, createdSinger);
+        return await mediator.Send(addSingerCommand);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteSinger(int id)
     {
-        var result = await _singerRepository.RemoveSingerAsync(id);
+        var result = await singerRepository.RemoveSingerAsync(id);
         return Ok(result);
     }
     
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateSinger(UpdateSingerRequest updateSingerRequest, int id)
+    [HttpPut]
+    public async Task<ActionResult<Song>> UpdateSinger(UpdateSongCommand updateSongCommand)
     {
-        var singer = await _singerRepository.UpdateSingerAsync(updateSingerRequest, id);
-        return Ok(singer);
+        return await mediator.Send(updateSongCommand);
     }
 }
