@@ -1,19 +1,16 @@
-using System;
-using System.Collections.Generic;
 using App.Entities;
 using App.Infrastructure.Contexts;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using App.Logic.DataTransferObjects.Request;
 using App.Logic.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
-namespace App.Logic.Services;
+namespace App.Logic.Repositories;
 
-public class AlbumService : IAlbumService
+public class AlbumRepository : IAlbumService
 {
     private readonly DataBaseContext _context;
 
-    public AlbumService(DataBaseContext context)
+    public AlbumRepository(DataBaseContext context)
     {
         _context = context;
     }

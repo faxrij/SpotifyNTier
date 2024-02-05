@@ -12,11 +12,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Logic.Services;
 
-public class SongService : ISongService
+public class SongRepository : ISongService
 {
     private readonly DataBaseContext _context;
 
-    public SongService(DataBaseContext context)
+    public SongRepository(DataBaseContext context)
     {
         _context = context;
     }

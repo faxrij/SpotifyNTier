@@ -1,5 +1,6 @@
 using App.Infrastructure.Contexts;
 using App.Logic.Interfaces;
+using App.Logic.Repositories;
 using App.Logic.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,10 +22,10 @@ public class Program
         builder.Services.AddDbContext<DataBaseContext>(options => 
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-        builder.Services.AddScoped<ICategoryService, CategoryService>();
-        builder.Services.AddScoped<ISingerService, SingerService>();
-        builder.Services.AddScoped<IAlbumService, AlbumService>();
-        builder.Services.AddScoped<ISongService, SongService>();
+        builder.Services.AddScoped<ICategoryService, CategoryRepository>();
+        builder.Services.AddScoped<ISingerService, SingerRepository>();
+        builder.Services.AddScoped<IAlbumService, AlbumRepository>();
+        builder.Services.AddScoped<ISongService, SongRepository>();
 
 
         var app = builder.Build();

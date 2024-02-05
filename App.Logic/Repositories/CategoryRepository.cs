@@ -1,19 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using App.Entities;
 using App.Infrastructure.Contexts;
 using App.Logic.DataTransferObjects.Request;
 using App.Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace App.Logic.Services;
+namespace App.Logic.Repositories;
 
-public class CategoryService : ICategoryService
+public class CategoryRepository : ICategoryService
 {
     private readonly DataBaseContext _context;
 
-    public CategoryService(DataBaseContext context)
+    public CategoryRepository(DataBaseContext context)
     {
         _context = context;
     }

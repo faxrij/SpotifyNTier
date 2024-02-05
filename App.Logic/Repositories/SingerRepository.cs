@@ -1,19 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using App.Entities;
 using App.Infrastructure.Contexts;
 using App.Logic.DataTransferObjects.Request;
 using App.Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace App.Logic.Services;
+namespace App.Logic.Repositories;
 
-public class SingerService : ISingerService
+public class SingerRepository : ISingerService
 {
     private readonly DataBaseContext _context;
 
-    public SingerService(DataBaseContext context)
+    public SingerRepository(DataBaseContext context)
     {
         _context = context;
     }
