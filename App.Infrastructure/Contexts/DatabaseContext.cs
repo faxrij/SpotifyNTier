@@ -47,9 +47,7 @@ internal class DataBaseContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new AlbumConfiguration());
-        modelBuilder.ApplyConfiguration(new SongConfiguration());
-        modelBuilder.ApplyConfiguration(new SingerConfiguration());
-        modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyAllConfigurationsFromAssembly(Assembly.GetExecutingAssembly());    
     }
 }
