@@ -5,7 +5,7 @@ using App.Logic.DataTransferObjects.Request;
 
 namespace App.Logic.Interfaces;
 
-public interface ISongService
+public interface ISongRepository
 {
     Task<List<Song>> GetAllSongsAsync();
     Task<Song?> GetSongByIdAsync(int id);

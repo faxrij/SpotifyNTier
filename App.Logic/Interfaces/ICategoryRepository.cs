@@ -1,11 +1,9 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using App.Entities;
 using App.Logic.DataTransferObjects.Request;
 
 namespace App.Logic.Interfaces;
 
-public interface ICategoryService
+public interface ICategoryRepository
 {
     Task<List<Category>> GetAllCategoriesAsync();
     Task<Category?> GetCategoryByIdAsync(int id);

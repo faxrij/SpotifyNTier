@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Logic.Repositories;
 
-public class SingerRepository : ISingerService
+public class SingerRepository : ISingerRepository
 {
     private readonly DataBaseContext _context;
 

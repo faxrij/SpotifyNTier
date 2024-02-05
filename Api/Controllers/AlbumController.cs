@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using App.Entities;
 using App.Logic.DataTransferObjects.Request;
 using App.Logic.Interfaces;
@@ -11,45 +9,45 @@ namespace Api.Controllers;
 [ApiController]
 public class AlbumController : ControllerBase
 {
-    private readonly IAlbumService _albumService;
+    private readonly IAlbumRepository _albumRepository;
 
-    public AlbumController(IAlbumService albumService)
+    public AlbumController(IAlbumRepository albumRepository)
     {
-        _albumService = albumService;
+        _albumRepository = albumRepository;
     }
     
     [HttpGet]
     public async Task<ActionResult<List<Album>>> GetAlbums()
     {
-        var albums = await _albumService.GetAllAlbumsAsync();
+        var albums = await _albumRepository.GetAllAlbumsAsync();
         return Ok(albums);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Album>> GetAlbum(int id)
     {
-        var album = await _albumService.GetAlbumByIdAsync(id);
+        var album = await _albumRepository.GetAlbumByIdAsync(id);
         return Ok(album);
     }
 
     [HttpPost]
     public async Task<ActionResult<Album>> CreateAlbum(CreateAlbumRequest createAlbumRequest)
     {
-        var createdAlbum = await _albumService.CreateAlbumAsync(createAlbumRequest);
+        var createdAlbum = await _albumRepository.CreateAlbumAsync(createAlbumRequest);
         return CreatedAtAction(nameof(GetAlbum), new { id = createdAlbum.Id }, createdAlbum);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAlbum(int id)
     {
-        var result = await _albumService.RemoveAlbumAsync(id);
+        var result = await _albumRepository.RemoveAlbumAsync(id);
         return Ok(result);
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAlbum(UpdateAlbumRequest updateAlbumRequest, int id)
     {
-        var album = await _albumService.UpdateAlbumAsync(updateAlbumRequest, id);
+        var album = await _albumRepository.UpdateAlbumAsync(updateAlbumRequest, id);
         return Ok(album);
     }
 }

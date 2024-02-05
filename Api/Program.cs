@@ -22,10 +22,10 @@ public class Program
         builder.Services.AddDbContext<DataBaseContext>(options => 
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-        builder.Services.AddScoped<ICategoryService, CategoryRepository>();
-        builder.Services.AddScoped<ISingerService, SingerRepository>();
-        builder.Services.AddScoped<IAlbumService, AlbumRepository>();
-        builder.Services.AddScoped<ISongService, SongRepository>();
+        builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+        builder.Services.AddScoped<ISingerRepository, SingerRepository>();
+        builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
+        builder.Services.AddScoped<ISongRepository, SongRepository>();
 
 
         var app = builder.Build();

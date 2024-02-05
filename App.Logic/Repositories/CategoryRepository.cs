@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Logic.Repositories;
 
-public class CategoryRepository : ICategoryService
+public class CategoryRepository : ICategoryRepository
 {
     private readonly DataBaseContext _context;
 
