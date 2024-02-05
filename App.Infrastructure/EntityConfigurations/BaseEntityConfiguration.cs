@@ -9,7 +9,7 @@ public abstract class BaseEntityConfiguration<TEntity> : IEntityTypeConfiguratio
 {
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
-        builder.HasKey("Id"); 
+        builder.HasKey(j => j.Id);
         builder.Property(j => j.CreatedAt).Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
     }
 }
