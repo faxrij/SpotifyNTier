@@ -2,7 +2,8 @@ using App.Domain.Entities;
 using App.Logic.Commands.AddAlbum;
 using App.Logic.Commands.DeleteAlbum;
 using App.Logic.Commands.UpdateAlbum;
-using App.Logic.Interfaces;
+using App.Logic.Queries.GetAlbum.GetAlbumById;
+using App.Logic.Queries.GetAlbum.GetAllAlbums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,38 +11,37 @@ namespace Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AlbumController(IAlbumRepository _albumRepository, IMediator _mediator) : ControllerBase
+public class AlbumController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<List<Album>>> GetAlbums()
     {
-        var albums = await _albumRepository.GetAllAlbumsAsync();
-        return Ok(albums);
+        return await mediator.Send(new GetAllAlbumsQuery());
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Album>> GetAlbum(int id)
     {
-        var album = await _albumRepository.GetAlbumByIdAsync(id);
-        return Ok(album);
+        var queryAlbumCommandById = new GetAlbumByIdQuery { Id = id };
+        return await mediator.Send(queryAlbumCommandById);
     }
 
     [HttpPost]
     public async Task<ActionResult<Album>> CreateAlbum(AddAlbumCommand addAlbumCommand)
     {
-        return await _mediator.Send(addAlbumCommand);
+        return await mediator.Send(addAlbumCommand);
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult<Boolean>> DeleteAlbum(int id)
     {
         var deleteAlbumCommand = new DeleteAlbumCommand { Id = id };
-        return await _mediator.Send(deleteAlbumCommand);
+        return await mediator.Send(deleteAlbumCommand);
     }
 
     [HttpPut]
     public async Task<ActionResult<Album>> UpdateAlbum(UpdateAlbumCommand updateAlbumCommand)
     {
-        return await _mediator.Send(updateAlbumCommand);
+        return await mediator.Send(updateAlbumCommand);
     }
 }
