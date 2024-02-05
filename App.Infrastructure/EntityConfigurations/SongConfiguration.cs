@@ -1,14 +1,13 @@
 using App.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace App.Infrastructure.EntityConfigurations;
 
-public class SongConfiguration : IEntityTypeConfiguration<Song>
+public class SongConfiguration : BaseEntityConfiguration<Song>
 {
-    public void Configure(EntityTypeBuilder<Song> builder)
+    public override void Configure(EntityTypeBuilder<Song> builder)
     {
-        builder.HasKey(c => c.Id);
+        base.Configure(builder);
         builder.Property(c => c.Title).HasMaxLength(10).IsRequired();
         builder.Property(c => c.Lyrics).HasMaxLength(50).IsRequired();
         builder.Property(c => c.DurationInSeconds).HasMaxLength(4).IsRequired();

@@ -48,6 +48,6 @@ internal class DataBaseContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyAllConfigurationsFromAssembly(Assembly.GetExecutingAssembly());    
+        modelBuilder.ApplyAllConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }

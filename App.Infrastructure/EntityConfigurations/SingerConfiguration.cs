@@ -1,14 +1,13 @@
 using App.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace App.Infrastructure.EntityConfigurations;
 
-public class SingerConfiguration : IEntityTypeConfiguration<Singer>
+public class SingerConfiguration : BaseEntityConfiguration<Singer>
 {
-    public void Configure(EntityTypeBuilder<Singer> builder)
+    public override void Configure(EntityTypeBuilder<Singer> builder)
     {
-        builder.HasKey(c => c.Id);
+        base.Configure(builder);
         builder.Property(c => c.BirthDate).HasMaxLength(10).IsRequired();
         builder.Property(c => c.Name).HasMaxLength(20).IsRequired();
     }

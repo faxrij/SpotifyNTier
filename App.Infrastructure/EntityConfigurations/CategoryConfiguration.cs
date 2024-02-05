@@ -1,14 +1,13 @@
 using App.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace App.Infrastructure.EntityConfigurations;
 
-public class CategoryConfiguration : IEntityTypeConfiguration<Category>
+public class CategoryConfiguration : BaseEntityConfiguration<Category>
 {
-    public void Configure(EntityTypeBuilder<Category> builder)
+    public override void Configure(EntityTypeBuilder<Category> builder)
     {
-        builder.HasKey(c => c.Id);
+        base.Configure(builder);
         builder.Property(c => c.Name).HasMaxLength(40).IsRequired();
     }
 }
