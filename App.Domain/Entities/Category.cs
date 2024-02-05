@@ -7,7 +7,7 @@ namespace App.Domain.Entities
     {
         public string Name { get; set; }
         public Category ParentCategory { get; set; }
-        public Boolean isParentCategory { get; set; }
+        public Boolean IsParentCategory { get; set; }
         public ICollection<Song> Songs { get; set; }
     }
 }

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using App.Domain.Entities;
 using App.Infrastructure.Contexts;
 using App.Logic.DataTransferObjects.Request;
@@ -42,7 +39,7 @@ internal class CategoryRepository : ICategoryRepository
             throw new InvalidOperationException($"Parent category with ID {createCategoryRequest.ParentCategoryId} not found.");
         }
 
-        category.isParentCategory = false;
+        category.IsParentCategory = false;
         category.Songs = new List<Song>();
         category.Name = createCategoryRequest.Name;
         _context.Categories.Add(category);

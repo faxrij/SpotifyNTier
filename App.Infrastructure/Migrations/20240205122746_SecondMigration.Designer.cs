@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.Infrastructure.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20240205111228_InitDatabase")]
-    partial class InitDatabase
+    [Migration("20240205122746_SecondMigration")]
+    partial class SecondMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,6 +66,9 @@ namespace App.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<bool>("IsParentCategory")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -74,9 +77,6 @@ namespace App.Infrastructure.Migrations
 
                     b.Property<int?>("ParentCategoryId")
                         .HasColumnType("integer");
-
-                    b.Property<bool>("isParentCategory")
-                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 

@@ -63,6 +63,9 @@ namespace App.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<bool>("IsParentCategory")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -71,9 +74,6 @@ namespace App.Infrastructure.Migrations
 
                     b.Property<int?>("ParentCategoryId")
                         .HasColumnType("integer");
-
-                    b.Property<bool>("isParentCategory")
-                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
