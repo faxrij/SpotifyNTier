@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using App.Infrastructure;
+using App.Logic;
 
 namespace Api;
 
@@ -12,6 +13,7 @@ public class Program
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
         
         builder.Services.AddInfrastructureServices(connectionString);
+        builder.Services.AddLogicServices();
         
         builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
         builder.Services.AddEndpointsApiExplorer();

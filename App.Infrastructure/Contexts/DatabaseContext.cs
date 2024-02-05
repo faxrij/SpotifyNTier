@@ -1,6 +1,5 @@
 using System.Reflection;
 using App.Domain.Entities;
-using App.Infrastructure.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Infrastructure.Contexts;

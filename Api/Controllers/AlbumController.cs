@@ -1,6 +1,8 @@
 using App.Domain.Entities;
+using App.Logic.Commands;
 using App.Logic.DataTransferObjects.Request;
 using App.Logic.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -10,10 +12,12 @@ namespace Api.Controllers;
 public class AlbumController : ControllerBase
 {
     private readonly IAlbumRepository _albumRepository;
+    private readonly IMediator _mediator;
 
-    public AlbumController(IAlbumRepository albumRepository)
+    public AlbumController(IAlbumRepository albumRepository, IMediator mediator)
     {
         _albumRepository = albumRepository;
+        _mediator = mediator;
     }
     
     [HttpGet]
@@ -31,10 +35,11 @@ public class AlbumController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Album>> CreateAlbum(CreateAlbumRequest createAlbumRequest)
+    public Task CreateAlbum(AddAlbumCommand createAlbumRequest)
     {
-        var createdAlbum = await _albumRepository.CreateAlbumAsync(createAlbumRequest);
-        return CreatedAtAction(nameof(GetAlbum), new { id = createdAlbum.Id }, createdAlbum);
+        return _mediator.Send(createAlbumRequest);
+        // var createdAlbum = await _albumRepository.CreateAlbumAsync(createAlbumRequest);
+        // return CreatedAtAction(nameof(GetAlbum), new { id = createdAlbum.Id }, createdAlbum);
     }
 
     [HttpDelete("{id}")]

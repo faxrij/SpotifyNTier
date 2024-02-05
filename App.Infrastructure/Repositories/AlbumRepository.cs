@@ -1,5 +1,6 @@
 using App.Domain.Entities;
 using App.Infrastructure.Contexts;
+using App.Logic.Commands;
 using App.Logic.DataTransferObjects.Request;
 using App.Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +28,7 @@ internal class AlbumRepository : IAlbumRepository
             .FirstOrDefaultAsync(a => a.Id == id);
     }
 
-    public async Task<Album> CreateAlbumAsync(CreateAlbumRequest createAlbumRequest)
+    public async Task<Album> CreateAlbumAsync(AddAlbumCommand createAlbumRequest)
     {
         Album album = new Album();
         album.Songs = new List<Song>();

@@ -8,6 +8,7 @@
         <OutputType>Library</OutputType>
     </PropertyGroup>
     <ItemGroup>
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     </ItemGroup>
@@ -18,6 +19,9 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\App.Domain\App.Domain.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Queries\" />
     </ItemGroup>
 
 </Project>
