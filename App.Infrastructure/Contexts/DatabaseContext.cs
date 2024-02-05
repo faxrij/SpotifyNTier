@@ -47,7 +47,26 @@ internal class DataBaseContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyAllConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        
+        modelBuilder.Entity<Category>()
+            .Property(c => c.Id)
+            .ValueGeneratedOnAdd()
+            .IsRequired();
+
+        modelBuilder.Entity<Song>()
+            .Property(s => s.Id)
+            .ValueGeneratedOnAdd()
+            .IsRequired();
+
+        modelBuilder.Entity<Album>()
+            .Property(a => a.Id)
+            .ValueGeneratedOnAdd()
+            .IsRequired();
+
+        modelBuilder.Entity<Singer>()
+            .Property(s => s.Id)
+            .ValueGeneratedOnAdd()
+            .IsRequired();
+
         base.OnModelCreating(modelBuilder);
     }
 }
