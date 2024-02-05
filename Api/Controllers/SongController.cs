@@ -2,7 +2,8 @@ using App.Domain.Entities;
 using App.Logic.Commands.AddSong;
 using App.Logic.Commands.DeleteSong;
 using App.Logic.Commands.UpdateSong;
-using App.Logic.Interfaces;
+using App.Logic.Queries.GetSong.GetAllSongs;
+using App.Logic.Queries.GetSong.GetSongById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,20 +11,19 @@ namespace Api.Controllers;
 
 [ApiController]
 [Route("/api/[controller]")]
-public class SongController(ISongRepository songRepository, IMediator mediator) : ControllerBase
+public class SongController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetAllSongs()
+    public async Task<ActionResult<List<Song>>> GetAllSongs()
     {
-        var songs = await songRepository.GetAllSongsAsync();
-        return Ok(songs);
+        return await mediator.Send(new GetAllSongsQuery());
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetSongById(int id)
+    public async Task<ActionResult<Song>> GetSongById(int id)
     {
-        var song = await songRepository.GetSongByIdAsync(id); 
-        return Ok(song);
+        var getSongByIdQuery = new GetSongByIdQuery() { Id = id };
+        return await mediator.Send(getSongByIdQuery);
     }
 
     [HttpPost]

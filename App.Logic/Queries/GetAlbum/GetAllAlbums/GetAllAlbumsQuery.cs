@@ -5,5 +5,4 @@ namespace App.Logic.Queries.GetAlbum.GetAllAlbums;
 
 public class GetAllAlbumsQuery : IRequest<List<Album>>
 {
-    
 }

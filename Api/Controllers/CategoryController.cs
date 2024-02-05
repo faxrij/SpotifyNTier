@@ -2,7 +2,8 @@ using App.Domain.Entities;
 using App.Logic.Commands.AddCategory;
 using App.Logic.Commands.DeleteCategory;
 using App.Logic.Commands.UpdateCategory;
-using App.Logic.Interfaces;
+using App.Logic.Queries.GetCategory.GetAllCategories;
+using App.Logic.Queries.GetCategory.GetCategoryById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,20 +11,19 @@ namespace Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CategoryController(ICategoryRepository categoryRepository, IMediator mediator) : ControllerBase
+public class CategoryController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<List<Category>>> GetCategories()
     {
-        var categories = await categoryRepository.GetAllCategoriesAsync();
-        return Ok(categories);
+        return await mediator.Send(new GetAllCategoriesQuery());
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Category>> GetCategory(int id)
     {
-        var category = await categoryRepository.GetCategoryByIdAsync(id);
-        return Ok(category);
+        var getCategoryByIdQuery = new GetCategoryByIdQuery() { Id = id };
+        return await mediator.Send(getCategoryByIdQuery);
     }
 
     [HttpPost]

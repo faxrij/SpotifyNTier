@@ -2,7 +2,8 @@ using App.Domain.Entities;
 using App.Logic.Commands.AddSinger;
 using App.Logic.Commands.DeleteSinger;
 using App.Logic.Commands.UpdateSong;
-using App.Logic.Interfaces;
+using App.Logic.Queries.GetSinger.GetAllSingers;
+using App.Logic.Queries.GetSinger.GetSingerById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,20 +11,19 @@ namespace Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class SingerController(ISingerRepository singerRepository, IMediator mediator) : ControllerBase
+public class SingerController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<List<Singer>>> GetSingers()
     {
-        var singers = await singerRepository.GetAllSingersAsync();
-        return Ok(singers);
+        return await mediator.Send(new GetAllSingersQuery());
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Singer>> GetSinger(int id)
     {
-        var singer = await singerRepository.GetSingerByIdAsync(id);
-        return Ok(singer);
+        var getSingerByIdQuery = new GetSingerByIdQuery() { Id = id };
+        return await mediator.Send(getSingerByIdQuery);
     }
 
     [HttpPost]
