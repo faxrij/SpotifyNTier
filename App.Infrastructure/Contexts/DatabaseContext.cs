@@ -7,7 +7,6 @@ internal class DataBaseContext : DbContext
 {
     public DataBaseContext(DbContextOptions<DataBaseContext> options) : base(options)
     {
-
     }
 
     public DbSet<Song> Songs { get; set; }
@@ -44,4 +43,13 @@ internal class DataBaseContext : DbContext
         }
     }
 
+    // protected override void OnModelCreating(ModelBuilder modelBuilder)
+    // {
+    //     modelBuilder.Entity<Auditable>().HasKey(a => a.Id);
+    //     modelBuilder.Entity<Auditable>().Property(a => a.Id).ValueGeneratedOnAdd();
+    //
+    //     // other configurations...
+    //
+    //     base.OnModelCreating(modelBuilder);
+    // }
 }
