@@ -1,7 +1,6 @@
 using App.Infrastructure.Contexts;
+using App.Infrastructure.Repositories;
 using App.Logic.Interfaces;
-using App.Logic.Repositories;
-using App.Logic.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api;

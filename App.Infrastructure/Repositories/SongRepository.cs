@@ -1,16 +1,10 @@
-// SongService.cs
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using App.Entities;
 using App.Infrastructure.Contexts;
 using App.Logic.DataTransferObjects.Request;
 using App.Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace App.Logic.Services;
+namespace App.Infrastructure.Repositories;
 
 public class SongRepository : ISongRepository
 {

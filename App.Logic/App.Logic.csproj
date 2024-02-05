@@ -17,7 +17,6 @@
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\App.Infrastructure\App.Infrastructure.csproj" />
         <ProjectReference Include="..\App.Domain\App.Domain.csproj" />
     </ItemGroup>
 
