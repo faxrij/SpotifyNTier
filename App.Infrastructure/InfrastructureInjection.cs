@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Infrastructure;
 
-public static class InfrastructureInjection
+internal static class InfrastructureInjection
 {
     public static void ConfigureServices(IServiceCollection services, string connectionString)
     { 
