@@ -16,9 +16,7 @@ public static class Program
 
         // Register RepositoryProvider
         services.AddScoped<IRepositoryProvider, RepositoryProvider>();
-
-        // Add other services or configurations if needed
-
+        
         // Add Authorization
         services.AddAuthorization();
     }
