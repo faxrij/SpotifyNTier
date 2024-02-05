@@ -7,10 +7,10 @@ namespace App.Infrastructure;
 
 public static class Program
 {
-    public static void ConfigureServices(WebApplicationBuilder builder, IServiceCollection services)
+    public static void ConfigureServices(WebApplicationBuilder builder, IServiceCollection services, string connectionString)
     { 
-        builder.Services.AddDbContext<DataBaseContext>(options => 
-            options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+        builder.Services.AddDbContext<DataBaseContext>(options =>
+            options.UseNpgsql(connectionString));
         
         // Register internal repositories
         services.AddScoped<ICategoryRepository, CategoryRepository>();

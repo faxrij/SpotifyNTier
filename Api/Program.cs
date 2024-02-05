@@ -7,8 +7,10 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-        App.Infrastructure.Program.ConfigureServices(builder, builder.Services);
-
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+        
+        App.Infrastructure.Program.ConfigureServices(builder, builder.Services, connectionString);
+        
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
