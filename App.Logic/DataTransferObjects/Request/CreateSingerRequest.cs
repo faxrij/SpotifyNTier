@@ -1,9 +1,8 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace App.DataTransferObjects.Request;
+namespace App.Logic.DataTransferObjects.Request;
 
-public class UpdateSingerRequest
+public class CreateSingerRequest
 {
     [Required]
     public string Name { get; set; }

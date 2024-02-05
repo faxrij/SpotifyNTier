@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using App.DataTransferObjects.Request;
+using App.Logic.DataTransferObjects.Request;
 using App.Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

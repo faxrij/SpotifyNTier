@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using App.DataTransferObjects.Request;
 using App.Entities;
 using App.Infrastructure.Contexts;
+using App.Logic.DataTransferObjects.Request;
 using App.Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 

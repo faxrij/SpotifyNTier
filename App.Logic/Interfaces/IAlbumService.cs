@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using App.DataTransferObjects.Request;
 using App.Entities;
+using App.Logic.DataTransferObjects.Request;
 
 namespace App.Logic.Interfaces;
 
