@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace App.Infrastructure.EntityConfigurations;
 
-public class AlbumConfiguration : BaseEntityConfiguration<Album>
+internal class AlbumConfiguration : BaseEntityConfiguration<Album>
 {
     public override void Configure(EntityTypeBuilder<Album> builder)
     {

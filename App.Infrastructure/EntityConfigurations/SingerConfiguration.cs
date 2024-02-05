@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace App.Infrastructure.EntityConfigurations;
 
-public class SingerConfiguration : BaseEntityConfiguration<Singer>
+internal class SingerConfiguration : BaseEntityConfiguration<Singer>
 {
     public override void Configure(EntityTypeBuilder<Singer> builder)
     {
