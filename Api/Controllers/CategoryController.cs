@@ -1,5 +1,6 @@
 using App.Domain.Entities;
 using App.Logic.Commands.AddCategory;
+using App.Logic.Commands.DeleteCategory;
 using App.Logic.Commands.UpdateCategory;
 using App.Logic.Interfaces;
 using MediatR;
@@ -32,10 +33,10 @@ public class CategoryController(ICategoryRepository categoryRepository, IMediato
     }
     
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCategory(int id)
+    public async Task<ActionResult<Boolean>> DeleteAlbum(int id)
     {
-        var result = await categoryRepository.RemoveCategoryAsync(id);
-        return Ok(result);
+        var deleteAlbumCommand = new DeleteCategoryCommand() { Id = id };
+        return await mediator.Send(deleteAlbumCommand);
     }
     
     [HttpPut]

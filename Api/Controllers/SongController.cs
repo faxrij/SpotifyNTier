@@ -1,5 +1,6 @@
 using App.Domain.Entities;
 using App.Logic.Commands.AddSong;
+using App.Logic.Commands.DeleteSong;
 using App.Logic.Commands.UpdateSong;
 using App.Logic.Interfaces;
 using MediatR;
@@ -32,10 +33,10 @@ public class SongController(ISongRepository songRepository, IMediator mediator) 
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> RemoveSong(int id)
+    public async Task<ActionResult<Boolean>> RemoveSong(int id)
     { 
-        var isRemoved = await songRepository.RemoveSongAsync(id); 
-        return Ok(isRemoved);
+        var deleteSongCommand = new DeleteSongCommand() { Id = id };
+        return await mediator.Send(deleteSongCommand);
     }
     
     [HttpPut]

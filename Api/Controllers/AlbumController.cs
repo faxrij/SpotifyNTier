@@ -1,5 +1,6 @@
 using App.Domain.Entities;
 using App.Logic.Commands.AddAlbum;
+using App.Logic.Commands.DeleteAlbum;
 using App.Logic.Commands.UpdateAlbum;
 using App.Logic.Interfaces;
 using MediatR;
@@ -32,10 +33,10 @@ public class AlbumController(IAlbumRepository _albumRepository, IMediator _media
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAlbum(int id)
+    public async Task<ActionResult<Boolean>> DeleteAlbum(int id)
     {
-        var result = await _albumRepository.RemoveAlbumAsync(id);
-        return Ok(result);
+        var deleteAlbumCommand = new DeleteAlbumCommand { Id = id };
+        return await _mediator.Send(deleteAlbumCommand);
     }
 
     [HttpPut]
