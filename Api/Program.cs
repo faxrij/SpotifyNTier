@@ -1,6 +1,4 @@
 using App.Infrastructure.Contexts;
-using App.Infrastructure.Repositories;
-using App.Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api;
@@ -12,20 +10,14 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+        App.Infrastructure.Program.ConfigureServices(builder.Services);
 
-        builder.Services.AddControllers();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-        
         builder.Services.AddDbContext<DataBaseContext>(options => 
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-        builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-        builder.Services.AddScoped<ISingerRepository, SingerRepository>();
-        builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
-        builder.Services.AddScoped<ISongRepository, SongRepository>();
-
+        builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
 

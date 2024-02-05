@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Infrastructure.Repositories;
 
-public class AlbumRepository : IAlbumRepository
+internal class AlbumRepository : IAlbumRepository
 {
     private readonly DataBaseContext _context;
 

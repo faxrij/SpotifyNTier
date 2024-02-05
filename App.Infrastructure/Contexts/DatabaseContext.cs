@@ -1,13 +1,9 @@
-using System;
-using System.Linq;
-using System.Threading;
 using Microsoft.EntityFrameworkCore;
 using App.Entities;
-using System.Threading.Tasks;
 
 namespace App.Infrastructure.Contexts;
 
-public class DataBaseContext : DbContext
+internal class DataBaseContext : DbContext
 {
     public DataBaseContext(DbContextOptions<DataBaseContext> options) : base(options)
     {

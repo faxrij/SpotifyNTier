@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Infrastructure.Repositories;
 
-public class SongRepository : ISongRepository
+internal class SongRepository : ISongRepository
 {
     private readonly DataBaseContext _context;
 
