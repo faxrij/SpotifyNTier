@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using App.Infrastructure;
 
 namespace Api;
@@ -12,7 +13,7 @@ public class Program
         
         builder.Services.AddInfrastructureServices(connectionString);
         
-        builder.Services.AddControllers();
+        builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 

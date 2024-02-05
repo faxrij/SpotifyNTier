@@ -1,4 +1,4 @@
-using App.Entities;
+using App.Domain.Entities;
 using App.Logic.DataTransferObjects.Request;
 
 namespace App.Logic.Interfaces;

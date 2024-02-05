@@ -1,15 +1,11 @@
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace App.Entities;
-
-public abstract class Auditable
+namespace App.Domain.Entities
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  
-    public int Id { get; set; }
-
-    public DateTime CreatedAt { get; set; }
-    public DateTime ModifiedAt { get; set; }
+    public abstract class Auditable
+    {
+        public int Id { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime ModifiedAt { get; set; }
+    }
 }

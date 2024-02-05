@@ -1,4 +1,4 @@
-using App.Entities;
+using App.Domain.Entities;
 using App.Infrastructure.Contexts;
 using App.Logic.DataTransferObjects.Request;
 using App.Logic.Interfaces;

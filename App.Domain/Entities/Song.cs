@@ -1,17 +1,13 @@
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
-namespace App.Entities;
-
-public class Song : Auditable
+namespace App.Domain.Entities
 {
-    public string Title { get; set; }
-    public int DurationInSeconds { get; set; }
-    public string Lyrics { get; set; }
-    
-    [JsonIgnore]
-    public ICollection<Category> Categories { get; set; }
-    
-    [JsonIgnore]
-    public Album Album { get; set; }
+    public class Song : Auditable
+    {
+        public string Title { get; set; }
+        public int DurationInSeconds { get; set; }
+        public string Lyrics { get; set; }
+        public ICollection<Category> Categories { get; set; }
+        public Album Album { get; set; }
+    }
 }
