@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Infrastructure;
 
-public static class Program
+public static class InfrastructureInjection
 {
-    public static void ConfigureServices(WebApplicationBuilder builder, IServiceCollection services, string connectionString)
+    public static void ConfigureServices(IServiceCollection services, string connectionString)
     { 
-        builder.Services.AddDbContext<DataBaseContext>(options =>
+        services.AddDbContext<DataBaseContext>(options =>
             options.UseNpgsql(connectionString));
         
         // Register internal repositories
@@ -18,9 +18,6 @@ public static class Program
         services.AddScoped<IAlbumRepository, AlbumRepository>();
         services.AddScoped<ISongRepository, SongRepository>();
 
-        // Register RepositoryProvider
-        services.AddScoped<IRepositoryProvider, RepositoryProvider>();
-        
         // Add Authorization
         services.AddAuthorization();
     }

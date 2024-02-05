@@ -1,4 +1,3 @@
-
 namespace Api;
 
 public class Program
@@ -9,7 +8,7 @@ public class Program
         builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
         
-        App.Infrastructure.Program.ConfigureServices(builder, builder.Services, connectionString);
+        App.Infrastructure.InfrastructureInjection.ConfigureServices(builder.Services, connectionString);
         
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
