@@ -1,5 +1,6 @@
 using System.Reflection;
 using App.Domain.Entities;
+using App.Infrastructure.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Infrastructure.Contexts;
@@ -46,21 +47,9 @@ internal class DataBaseContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyAllConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
-        ConfigureId<Category>(modelBuilder);
-        ConfigureId<Song>(modelBuilder);
-        ConfigureId<Album>(modelBuilder);
-        ConfigureId<Singer>(modelBuilder);
-
-        base.OnModelCreating(modelBuilder);
-    }
-
-    private static void ConfigureId<TEntity>(ModelBuilder modelBuilder) where TEntity : Auditable
-    {
-        modelBuilder.Entity<TEntity>()
-            .Property(e => e.Id)
-            .ValueGeneratedOnAdd()
-            .IsRequired();
+        modelBuilder.ApplyConfiguration(new AlbumConfiguration());
+        modelBuilder.ApplyConfiguration(new SongConfiguration());
+        modelBuilder.ApplyConfiguration(new SingerConfiguration());
+        modelBuilder.ApplyConfiguration(new CategoryConfiguration());
     }
 }
