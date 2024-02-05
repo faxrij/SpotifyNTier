@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Infrastructure;
 
-internal static class InfrastructureInjection
+public static class InfrastructureInjection
 {
-    public static void ConfigureServices(IServiceCollection services, string connectionString)
+    public static void AddInfrastructureServices(this IServiceCollection services, string connectionString)
     { 
         services.AddDbContext<DataBaseContext>(options =>
             options.UseNpgsql(connectionString));
