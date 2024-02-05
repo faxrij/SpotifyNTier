@@ -1,3 +1,4 @@
+using System.Reflection;
 using App.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,25 +46,7 @@ internal class DataBaseContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Category>()
-            .Property(c => c.Id)
-            .ValueGeneratedOnAdd()
-            .IsRequired();
-
-        modelBuilder.Entity<Song>()
-            .Property(s => s.Id)
-            .ValueGeneratedOnAdd()
-            .IsRequired();
-
-        modelBuilder.Entity<Album>()
-            .Property(a => a.Id)
-            .ValueGeneratedOnAdd()
-            .IsRequired();
-        
-        modelBuilder.Entity<Singer>()
-            .Property(a => a.Id)
-            .ValueGeneratedOnAdd()
-            .IsRequired();
+        modelBuilder.ApplyAllConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         
         base.OnModelCreating(modelBuilder);
     }
