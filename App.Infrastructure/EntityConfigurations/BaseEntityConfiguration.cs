@@ -1,15 +1,15 @@
+using App.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace App.Infrastructure.EntityConfigurations;
 
-public abstract class BaseEntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : class
+public abstract class BaseEntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : Auditable
 {
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
         builder.HasKey("Id"); 
-        var createdAtProperty = builder.Property<DateTime>("CreatedAt");
-        createdAtProperty.Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
+        builder.Property(j => j.CreatedAt).Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
     }
 }
