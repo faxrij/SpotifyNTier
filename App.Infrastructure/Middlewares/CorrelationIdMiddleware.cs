@@ -1,6 +1,6 @@
 using Serilog.Context;
 
-namespace App.Infrastructure;
+namespace App.Infrastructure.Middlewares;
 
 public class CorrelationIdMiddleware(RequestDelegate next)
 {

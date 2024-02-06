@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using App.Infrastructure;
+using App.Infrastructure.Middlewares;
 using App.Logic;
 
 namespace Api;
