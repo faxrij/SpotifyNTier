@@ -10,12 +10,13 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
         builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
         var elasticsearchUrl = builder.Configuration["Logging:Elasticsearch:Url"];
         var autoRegisterTemplate = builder.Configuration.GetValue<bool>("Logging:Elasticsearch:AutoRegisterTemplate");
         var indexFormat = builder.Configuration["Logging:Elasticsearch:IndexFormat"];
-        
+
         builder.Services.AddInfrastructureServices(connectionString, elasticsearchUrl, autoRegisterTemplate, indexFormat);
         builder.Services.AddLogicServices();
         
@@ -24,9 +25,9 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
-        
+
+        app.UseMiddleware<ErrorHandlingMiddleware>();
         app.UseMiddleware<CorrelationIdMiddleware>();
-        app.UseMiddleware<ErrorHandlingMiddleware>();   
 
         if (app.Environment.IsDevelopment())
         {

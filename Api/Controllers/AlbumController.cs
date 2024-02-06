@@ -16,6 +16,7 @@ public class AlbumController(IMediator mediator) : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<Album>>> GetAlbums()
     {
+        throw new Exception();
         return await mediator.Send(new GetAllAlbumsQuery());
     }
 

@@ -1,5 +1,6 @@
 using System.Net;
-using Newtonsoft.Json;
+using App.Infrastructure.Models;
+using Serilog;
 
 namespace App.Infrastructure.Middlewares;
 
@@ -11,24 +12,16 @@ public class ErrorHandlingMiddleware(RequestDelegate next)
         {
             await next(context);
         }
-        catch (Exception ex)
+        catch (Exception exception)
         {
-            await HandleExceptionAsync(context, ex);
+            Log.Error(exception, "Exception occurred: {Message}", exception.Message);
+            var errorResponse = new ErrorResponse
+            {
+                Status = (int)HttpStatusCode.InternalServerError,
+                Title = "Server Error",
+            };
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            await context.Response.WriteAsJsonAsync(errorResponse);
         }
-    }
-
-    private static Task HandleExceptionAsync(HttpContext context, Exception exception)
-    {
-        context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
-        var errorResponse = new
-        {
-            message = "An error occurred while processing your request.",
-            exception = exception.Message
-        };
-
-        var json = JsonConvert.SerializeObject(errorResponse);
-        return context.Response.WriteAsync(json);
     }
 }
