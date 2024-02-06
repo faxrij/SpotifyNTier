@@ -1,11 +1,10 @@
-using App.Logic.Commands.AddSinger;
 using FluentValidation;
 
-namespace App.Logic.Validators;
+namespace App.Logic.Commands.AddSinger;
 
-public class SingerValidator : AbstractValidator<AddSingerCommand>
+public class AddSingerCommandValidator : AbstractValidator<AddSingerCommand>
 {
-    public SingerValidator()
+    public AddSingerCommandValidator()
     {
         RuleFor(x => x.Name).NotEmpty().WithMessage("Category name cannot be empty");
         RuleFor(x => x.BirthDate).Must(BeValidBirthDate).WithMessage("Invalid birth date");

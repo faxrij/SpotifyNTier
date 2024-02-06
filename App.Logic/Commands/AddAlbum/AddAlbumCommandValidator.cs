@@ -1,11 +1,10 @@
-using App.Logic.Commands.AddAlbum;
 using FluentValidation;
 
-namespace App.Logic.Validators;
+namespace App.Logic.Commands.AddAlbum;
 
-public class AlbumValidator : AbstractValidator<AddAlbumCommand>
+public class AddAlbumCommandValidator : AbstractValidator<AddAlbumCommand>
 {
-    public AlbumValidator()
+    public AddAlbumCommandValidator()
     {
         RuleFor(x => x.Title).NotEmpty().WithMessage("Title cannot be empty.");
         RuleFor(x => x.ReleaseYear).NotEmpty().WithMessage("Release year cannot be empty");
