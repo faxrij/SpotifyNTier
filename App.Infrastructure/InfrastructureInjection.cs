@@ -9,15 +9,13 @@ namespace App.Infrastructure
 {
     public static class InfrastructureInjection
     {
-        public static void AddInfrastructureServices(this IServiceCollection services, string connectionString,
-            string elasticSearchString,
+        public static void AddInfrastructureServices(this IServiceCollection services, string connectionString, string elasticSearchString, 
             Boolean autoRegisterTemplate, string indexFormat)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
                 .Enrich.FromLogContext()
-                .WriteTo.Console(outputTemplate:
-                    "[{Timestamp:HH:mm:ss} {Level:u3}] [{CorrelationId}] {Message:lj}{NewLine}{Exception}")
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [{CorrelationId}] {Message:lj}{NewLine}{Exception}")
                 .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(elasticSearchString))
                 {
                     AutoRegisterTemplate = autoRegisterTemplate,
