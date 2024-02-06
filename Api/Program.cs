@@ -1,7 +1,10 @@
 using System.Text.Json.Serialization;
 using App.Infrastructure;
+using App.Infrastructure.Behaviors;
 using App.Infrastructure.Middlewares;
 using App.Logic;
+using MediatR;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Api;
 
@@ -23,7 +26,7 @@ public class Program
         builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-
+        
         var app = builder.Build();
         
         if (app.Environment.IsDevelopment())

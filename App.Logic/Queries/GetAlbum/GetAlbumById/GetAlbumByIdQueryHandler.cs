@@ -12,6 +12,6 @@ public class GetAlbumByIdQueryHandler(IAlbumRepository albumRepository) : IReque
         {
             throw new InvalidOperationException("Error when Searching Null id");
         }
-        return await albumRepository.GetAlbumByIdAsync(request.Id.Value);
+        return await albumRepository.GetAlbumByIdAsync(request.Id);
     }
 }

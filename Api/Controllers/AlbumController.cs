@@ -16,14 +16,13 @@ public class AlbumController(IMediator mediator) : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<Album>>> GetAlbums()
     {
-        throw new Exception();
         return await mediator.Send(new GetAllAlbumsQuery());
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Album>> GetAlbum(int id)
     {
-        var getAlbumByIdQuery = new GetAlbumByIdQuery { Id = id };
+        var getAlbumByIdQuery = new GetAlbumByIdQuery(Id : id);
         return await mediator.Send(getAlbumByIdQuery);
     }
 

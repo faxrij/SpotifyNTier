@@ -1,6 +1,8 @@
+using App.Infrastructure.Behaviors;
 using App.Infrastructure.Contexts;
 using App.Infrastructure.Repositories;
 using App.Logic.Interfaces;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
@@ -25,6 +27,10 @@ namespace App.Infrastructure
 
             services.AddDbContext<DataBaseContext>(options =>
                 options.UseNpgsql(connectionString));
+
+            services.AddMemoryCache();
+            services.AddSingleton<ICacheService, CacheService>();
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(QueryCachingPipelineBehavior<,>));
 
             // Register internal repositories
             services.AddScoped<ICategoryRepository, CategoryRepository>();
