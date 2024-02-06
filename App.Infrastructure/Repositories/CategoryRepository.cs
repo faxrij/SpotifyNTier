@@ -7,23 +7,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Infrastructure.Repositories;
 
-internal class CategoryRepository : ICategoryRepository
+internal class CategoryRepository(DataBaseContext context) : ICategoryRepository
 {
-    private readonly DataBaseContext _context;
-
-    public CategoryRepository(DataBaseContext context)
-    {
-        _context = context;
-    }
-
     public async Task<List<Category>> GetAllCategoriesAsync()
     {
-        return await _context.Categories.ToListAsync();
+        return await context.Categories.ToListAsync();
     }
 
     public async Task<Category?> GetCategoryByIdAsync(int id)
     {
-        return await _context.Categories. 
+        return await context.Categories. 
             Include(c => c.ParentCategory)
             .Include(c => c.Songs)
             .FirstOrDefaultAsync(c => c.Id == id);
@@ -32,7 +25,7 @@ internal class CategoryRepository : ICategoryRepository
     public async Task<Category> CreateCategoryAsync(AddCategoryCommand addCategoryCommand)
     {
         Category category = new Category();
-        var parentCategory = await _context.Categories
+        var parentCategory = await context.Categories
             .FirstOrDefaultAsync(c => c.Id == addCategoryCommand.ParentCategoryId);
         
         if (parentCategory == null)
@@ -43,34 +36,34 @@ internal class CategoryRepository : ICategoryRepository
         category.IsParentCategory = false;
         category.Songs = new List<Song>();
         category.Name = addCategoryCommand.Name;
-        _context.Categories.Add(category);
-        await _context.SaveChangesAsync();
+        context.Categories.Add(category);
+        await context.SaveChangesAsync();
         return category;
     }
 
     public async Task<bool> RemoveCategoryAsync(int id)
     {
-        var categoryToRemove = await _context.Categories.FindAsync(id);
+        var categoryToRemove = await context.Categories.FindAsync(id);
 
         if (categoryToRemove == null)
         {
             return false;
         }
 
-        _context.Categories.Remove(categoryToRemove);
-        await _context.SaveChangesAsync();
+        context.Categories.Remove(categoryToRemove);
+        await context.SaveChangesAsync();
         return true;
     }
 
     public async Task<Category?> UpdateCategoryAsync(UpdateCategoryCommand updateCategoryCommand, int id)
     {
-        var categoryToUpdate = await _context.Categories.FindAsync(id);
+        var categoryToUpdate = await context.Categories.FindAsync(id);
         if (categoryToUpdate == null)
         {
             throw new InvalidOperationException($"Provided category with ID {id} not found.");
         }
 
-        var parentCategory = await _context.Categories.FirstOrDefaultAsync(c => c.Id == updateCategoryCommand.ParentCategoryId);
+        var parentCategory = await context.Categories.FirstOrDefaultAsync(c => c.Id == updateCategoryCommand.ParentCategoryId);
 
         if (parentCategory == null)
         {
@@ -80,7 +73,7 @@ internal class CategoryRepository : ICategoryRepository
         categoryToUpdate.ParentCategory = parentCategory;
         categoryToUpdate.Name = updateCategoryCommand.Name;
         
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
         return categoryToUpdate;
     }
 }

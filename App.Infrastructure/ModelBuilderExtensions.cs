@@ -14,7 +14,7 @@ public static class ModelBuilderExtensions
 
         foreach (var configuration in configurations)
         {
-            modelBuilder.ApplyConfiguration((dynamic)configuration);
+            modelBuilder.ApplyConfiguration((dynamic)configuration!);
         }
     }
     private static bool IsIEntityTypeConfiguration(Type type)

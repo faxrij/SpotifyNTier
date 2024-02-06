@@ -7,23 +7,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Infrastructure.Repositories;
 
-internal class SongRepository : ISongRepository
+internal class SongRepository(DataBaseContext context) : ISongRepository
 {
-    private readonly DataBaseContext _context;
-
-    public SongRepository(DataBaseContext context)
-    {
-        _context = context;
-    }
-
     public async Task<List<Song>> GetAllSongsAsync()
     {
-        return await _context.Songs.ToListAsync();
+        return await context.Songs.ToListAsync();
     }
 
     public async Task<Song?> GetSongByIdAsync(int id)
     {
-        return await _context.Songs
+        return await context.Songs
             .Include(s => s.Categories)
             .Include(s => s.Album)
             .FirstOrDefaultAsync(s => s.Id == id);
@@ -32,7 +25,7 @@ internal class SongRepository : ISongRepository
     public async Task<Song> CreateSongAsync(AddSongCommand addSongCommand)
     {
         Song song = new Song();
-        Album? album = await _context.Albums.Where(a => a.Id == addSongCommand.AlbumId).FirstOrDefaultAsync();
+        Album? album = await context.Albums.Where(a => a.Id == addSongCommand.AlbumId).FirstOrDefaultAsync();
 
         if (album == null)
         {
@@ -44,34 +37,34 @@ internal class SongRepository : ISongRepository
         song.Title = addSongCommand.Title;
         song.DurationInSeconds = addSongCommand.DurationInSeconds;
         song.Categories = new List<Category>();
-        _context.Songs.Add(song);
-        await _context.SaveChangesAsync();
+        context.Songs.Add(song);
+        await context.SaveChangesAsync();
         return song;
     }
 
     public async Task<bool> RemoveSongAsync(int id)
     {
-        var songToRemove = await _context.Songs.FindAsync(id);
+        var songToRemove = await context.Songs.FindAsync(id);
 
         if (songToRemove == null)
         {
             return false;
         }
 
-        _context.Songs.Remove(songToRemove);
-        await _context.SaveChangesAsync();
+        context.Songs.Remove(songToRemove);
+        await context.SaveChangesAsync();
         return true;
     }
 
     public async Task<Song?> UpdateSongAsync(UpdateSongCommand updateSongCommand, int id)
     {
-        var songToUpdate = await _context.Songs.FindAsync(id);
+        var songToUpdate = await context.Songs.FindAsync(id);
         if (songToUpdate == null)
         {
             throw new InvalidOperationException($"Provided Song with ID {id} not found.");
         }
 
-        var album = await _context.Albums.FirstOrDefaultAsync(c => c.Id == updateSongCommand.AlbumId);
+        var album = await context.Albums.FirstOrDefaultAsync(c => c.Id == updateSongCommand.AlbumId);
 
         if (album == null)
         {
@@ -83,7 +76,7 @@ internal class SongRepository : ISongRepository
         songToUpdate.Lyrics = updateSongCommand.Lyrics;
         songToUpdate.Title = updateSongCommand.Title;
         
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
         return songToUpdate;
     }
 }
