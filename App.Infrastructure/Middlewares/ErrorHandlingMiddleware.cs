@@ -4,15 +4,22 @@ using Serilog;
 
 namespace App.Infrastructure.Middlewares;
 
-public class ErrorHandlingMiddleware(RequestDelegate next)
+public class ErrorHandlingMiddleware
 {
+    private readonly RequestDelegate _next;
+ 
+    public ErrorHandlingMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
+ 
     public async Task Invoke(HttpContext context)
     {
         try
         {
-            await next(context);
+            await _next(context);
         }
-        catch (Exception exception)
+        catch (System.Exception exception)
         {
             Log.Error(exception, "Exception occurred: {Message}", exception.Message);
             var errorResponse = new ErrorResponse

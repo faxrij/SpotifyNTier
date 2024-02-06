@@ -10,7 +10,7 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
+        
         builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
         var elasticsearchUrl = builder.Configuration["Logging:Elasticsearch:Url"];
@@ -25,10 +25,7 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
-
-        app.UseMiddleware<ErrorHandlingMiddleware>();
-        app.UseMiddleware<CorrelationIdMiddleware>();
-
+        
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -46,6 +43,9 @@ public class Program
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
+        
+        app.UseMiddleware<ErrorHandlingMiddleware>();
+        app.UseMiddleware<CorrelationIdMiddleware>();
 
         app.MapControllers();
         
