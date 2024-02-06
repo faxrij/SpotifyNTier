@@ -1,6 +1,8 @@
 using System.Text.Json.Serialization;
 using App.Infrastructure;
 using App.Logic;
+using Serilog;
+using Serilog.Context;
 
 namespace Api;
 
@@ -23,6 +25,15 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
+        
+        app.Use(async (context, next) =>
+        {
+            var correlationId = context.Request.Headers["Correlation-ID"].FirstOrDefault() ?? Guid.NewGuid().ToString();
+            using (LogContext.PushProperty("CorrelationId", correlationId))
+            {
+                await next.Invoke();
+            }
+        });
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -44,7 +55,7 @@ public class Program
         app.UseAuthorization();
 
         app.MapControllers();
-
+        
         app.Run();
     }
 }

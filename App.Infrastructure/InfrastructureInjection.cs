@@ -9,11 +9,13 @@ namespace App.Infrastructure
 {
     public static class InfrastructureInjection
     {
-        public static void AddInfrastructureServices(this IServiceCollection services, string connectionString, string elasticSearchString,
+        public static void AddInfrastructureServices(this IServiceCollection services, string connectionString,
+            string elasticSearchString,
             Boolean autoRegisterTemplate, string indexFormat)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
+                .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(elasticSearchString))
                 {
