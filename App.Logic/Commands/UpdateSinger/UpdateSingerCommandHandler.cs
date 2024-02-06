@@ -4,18 +4,11 @@ using MediatR;
 
 namespace App.Logic.Commands.UpdateSinger;
 
-public class UpdateSingerCommandHandler : IRequestHandler<UpdateSingerCommand, Singer>
+public class UpdateSingerCommandHandler(ISingerRepository singerRepository) : IRequestHandler<UpdateSingerCommand, Singer>
 {
-    private readonly ISingerRepository _singerRepository;
-
-    public UpdateSingerCommandHandler(ISingerRepository singerRepository)
-    {
-        _singerRepository = singerRepository;
-    }
-
     public async Task<Singer> Handle(UpdateSingerCommand request, CancellationToken cancellationToken)
     {
         var id = request.Id;
-        return await _singerRepository.UpdateSingerAsync(request, id);
+        return await singerRepository.UpdateSingerAsync(request, id);
     }
 }

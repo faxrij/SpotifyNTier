@@ -4,18 +4,12 @@ using MediatR;
 
 namespace App.Logic.Commands.AddCategory;
 
-public class AddCategoryCommandHandler : IRequestHandler<AddCategoryCommand, Category>
+public class AddCategoryCommandHandler(ICategoryRepository categoryRepository)
+    : IRequestHandler<AddCategoryCommand, Category>
 {
-    private readonly ICategoryRepository _categoryRepository;
-
-    public AddCategoryCommandHandler(ICategoryRepository categoryRepository)
-    {
-        _categoryRepository = categoryRepository;
-    }
-
     public async Task<Category> Handle(AddCategoryCommand request, CancellationToken cancellationToken)
     {
-        var album = await _categoryRepository.CreateCategoryAsync(request);
+        var album = await categoryRepository.CreateCategoryAsync(request);
         return album;
     }
 }
