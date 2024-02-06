@@ -29,14 +29,16 @@ namespace App.Infrastructure
                 options.UseNpgsql(connectionString));
 
             services.AddMemoryCache();
-            services.AddSingleton<ICacheService, CacheService>();
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(QueryCachingPipelineBehavior<,>));
+            services.AddDistributedMemoryCache();
+            services.AddSingleton<ICache, CacheService>();
 
             // Register internal repositories
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ISingerRepository, SingerRepository>();
             services.AddScoped<IAlbumRepository, AlbumRepository>();
             services.AddScoped<ISongRepository, SongRepository>();
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
 
             // Add Authorization
             services.AddAuthorization();
