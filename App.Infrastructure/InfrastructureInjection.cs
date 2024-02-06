@@ -16,7 +16,8 @@ namespace App.Infrastructure
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
                 .Enrich.FromLogContext()
-                .WriteTo.Console()
+                .WriteTo.Console(outputTemplate:
+                    "[{Timestamp:HH:mm:ss} {Level:u3}] [{CorrelationId}] {Message:lj}{NewLine}{Exception}")
                 .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(elasticSearchString))
                 {
                     AutoRegisterTemplate = autoRegisterTemplate,
