@@ -31,11 +31,8 @@ namespace App.Infrastructure
             // 3. Caching Services
             services.AddMemoryCache();
             services.AddDistributedMemoryCache();
-            services.AddSingleton<ICache, CacheService>();
-    
-            // 4. Cache Policy and Behaviors
-            services.AddScoped(typeof(ICachePolicy<,>), typeof(CachePolicy<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
+            
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CacheBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CacheInvalidationBehavior<,>));
     
             // 5. Register internal repositories

@@ -1,27 +1,24 @@
 using MediatR;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace App.Infrastructure.Behaviors;
 
-public class CacheInvalidationBehavior<TRequest, TResponse>(IMemoryCache cache) : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
+public class CacheInvalidationBehavior<TRequest, TResponse>(IEnumerable<ICacheInvalidator<TRequest>> cacheInvalidators)
+    : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
 {
-    private void InvalidateCache(TRequest request)
-    {
-        string cacheKey = GenerateCacheKey(request);
-        cache.Remove(cacheKey);
-    }
-
-    private string GenerateCacheKey(TRequest request)
-    {
-        return $"CacheKey_{request.GetType().FullName}";
-    }
+    private readonly List<ICacheInvalidator<TRequest>> _cacheInvalidators = cacheInvalidators.ToList();
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        var response = await next();
-        
-        InvalidateCache(request);
+        var result = await next();
 
-        return response;
+        // now loop through each cache invalidator for this request type and call the Invalidate method passing
+        // an instance of this request in order to retrieve a cache key.
+        foreach (var invalidator in _cacheInvalidators)
+        {
+            await invalidator.Invalidate(request);
+        }
+
+        return result;    
     }
 }
