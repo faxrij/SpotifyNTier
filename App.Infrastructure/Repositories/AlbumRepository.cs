@@ -45,7 +45,8 @@ internal class AlbumRepository(DataBaseContext context) : IAlbumRepository
 
         if (albumToRemove == null)
         {
-            return false;
+            Log.Error($"Album with ID {id} not found.");
+            throw new InvalidOperationException($"Album with ID {id} not found.");
         }
 
         context.Albums.Remove(albumToRemove);

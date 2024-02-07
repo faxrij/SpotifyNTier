@@ -54,8 +54,8 @@ internal class CategoryRepository(DataBaseContext context) : ICategoryRepository
 
         if (categoryToRemove == null)
         {
-            return false;
-        }
+            Log.Error($"Parent category with ID {id} not found.");
+            throw new InvalidOperationException($"Parent category with ID {id} not found.");        }
 
         context.Categories.Remove(categoryToRemove);
         await context.SaveChangesAsync();

@@ -55,7 +55,8 @@ internal class SongRepository(DataBaseContext context) : ISongRepository
 
         if (songToRemove == null)
         {
-            return false;
+            Log.Error($"Provided Song with ID {id} not found.");
+            throw new InvalidOperationException($"Provided Song with ID {id} not found.");
         }
 
         context.Songs.Remove(songToRemove);

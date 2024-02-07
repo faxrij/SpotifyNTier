@@ -43,7 +43,8 @@ internal class SingerRepository(DataBaseContext context) : ISingerRepository
 
         if (singerToRemove == null)
         {
-            return false;
+            Log.Error($"Provided Singer with ID {id} not found.");
+            throw new InvalidOperationException($"Provided Singer with ID {id} not found.");
         }
         context.Singers.Remove(singerToRemove);
         await context.SaveChangesAsync();
