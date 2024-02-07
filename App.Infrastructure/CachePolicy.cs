@@ -1,18 +1,17 @@
-using App.Domain.Entities;
-using App.Logic.Queries.GetAlbum.GetAlbumById;
+using MediatR;
 
 namespace App.Infrastructure;
 
-public class CachePolicy : ICachePolicy<GetAlbumByIdQuery, Album>
+public class CachePolicy<TRequest, TResponse> : ICachePolicy<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
-    // Optionally, change defaults
-    public TimeSpan? AbsoluteExpirationRelativeToNow => TimeSpan.FromMinutes(10);
-    public TimeSpan? SlidingExpiration => TimeSpan.FromMinutes(1);
+    public DateTime? AbsoluteExpiration => null;
+    public TimeSpan? AbsoluteExpirationRelativeToNow => TimeSpan.FromMinutes(5);
+    public TimeSpan? SlidingExpiration => TimeSpan.FromSeconds(30);
 
-    // Optionally, provide a different implementation here. By default the CacheKey will be in the following format:
-    //     Query{CustomerNumber:001425}
-    public string GetCacheKey(GetAlbumByIdQuery query)
+    public string GetCacheKey(TRequest request)
     {
-        return $"Customers.{query.Id}";
+        var r = new { request };
+        var props = r.request.GetType().GetProperties().Select(pi => $"{pi.Name}:{pi.GetValue(r.request, null)}");
+        return $"{typeof(TRequest).FullName}{{{string.Join(",", props)}}}";
     }
 }

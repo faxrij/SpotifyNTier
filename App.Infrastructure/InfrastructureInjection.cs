@@ -1,7 +1,9 @@
+using App.Domain.Entities;
 using App.Infrastructure.Behaviors;
 using App.Infrastructure.Contexts;
 using App.Infrastructure.Repositories;
 using App.Logic.Interfaces;
+using App.Logic.Queries.GetAlbum.GetAlbumById;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -31,7 +33,8 @@ namespace App.Infrastructure
             services.AddMemoryCache();
             services.AddDistributedMemoryCache();
             services.AddSingleton<ICache, CacheService>();
-
+            services.AddScoped(typeof(ICachePolicy<,>), typeof(CachePolicy<,>));
+            
             // Register internal repositories
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ISingerRepository, SingerRepository>();
@@ -39,7 +42,7 @@ namespace App.Infrastructure
             services.AddScoped<ISongRepository, SongRepository>();
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
-
+            
             // Add Authorization
             services.AddAuthorization();
         }

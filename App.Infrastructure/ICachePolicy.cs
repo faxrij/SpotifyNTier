@@ -2,7 +2,7 @@ using MediatR;
 
 namespace App.Infrastructure;
 
-public interface ICachePolicy<in TRequest, TResponse> where TRequest : IRequest<TResponse>
+public interface ICachePolicy<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
     DateTime? AbsoluteExpiration => null;
     TimeSpan? AbsoluteExpirationRelativeToNow => TimeSpan.FromMinutes(5);

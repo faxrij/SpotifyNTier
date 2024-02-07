@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using App.Infrastructure;
 using App.Infrastructure.Middlewares;
 using App.Logic;
+using Newtonsoft.Json;
 
 namespace Api;
 
@@ -20,9 +21,17 @@ public class Program
         builder.Services.AddInfrastructureServices(connectionString, elasticsearchUrl, autoRegisterTemplate, indexFormat);
         builder.Services.AddLogicServices();
         
-        builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+        builder.Services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        });
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        
+        JsonConvert.DefaultSettings = () => new JsonSerializerSettings {
+            Formatting = Formatting.Indented,
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        };
         
         var app = builder.Build();
         
