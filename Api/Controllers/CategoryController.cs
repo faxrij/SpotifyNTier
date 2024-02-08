@@ -33,7 +33,7 @@ public class CategoryController(IMediator mediator) : ControllerBase
     }
     
     [HttpDelete("{id}")]
-    public async Task<ActionResult<Boolean>> DeleteAlbum(int id)
+    public async Task<ActionResult<Boolean>> DeleteCategory(int id)
     {
         var deleteAlbumCommand = new DeleteCategoryCommand() { Id = id };
         return await mediator.Send(deleteAlbumCommand);

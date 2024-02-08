@@ -1,6 +1,7 @@
 using App.Domain.Entities;
 using App.Logic.Commands.AddSinger;
 using App.Logic.Commands.DeleteSinger;
+using App.Logic.Commands.UpdateSinger;
 using App.Logic.Commands.UpdateSong;
 using App.Logic.Queries.GetSinger.GetAllSingers;
 using App.Logic.Queries.GetSinger.GetSingerById;
@@ -40,8 +41,8 @@ public class SingerController(IMediator mediator) : ControllerBase
     }
     
     [HttpPut]
-    public async Task<ActionResult<Song>> UpdateSinger(UpdateSongCommand updateSongCommand)
+    public async Task<ActionResult<Singer>> UpdateSinger(UpdateSingerCommand updateSingerCommand)
     {
-        return await mediator.Send(updateSongCommand);
+        return await mediator.Send(updateSingerCommand);
     }
 }
